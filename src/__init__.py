@@ -4,10 +4,10 @@ from flask_smorest import Api
 import config.flask_config as flask_config
 import config.db_config as db_config
 import src.db.manager_db as manager_db
-from src.blueprints.cars import blp as cars_blp
-from src.blueprints.dropoff import blp as dropoff_blp
-from src.blueprints.journey import blp as journey_blp
-from src.blueprints.locate import blp as locate_blp
+from src.controller.cars import blp as cars_blp
+from src.controller.dropoff import blp as dropoff_blp
+from src.controller.journey import blp as journey_blp
+from src.controller.locate import blp as locate_blp
 
 
 def create_app(test_config=None):
@@ -25,7 +25,7 @@ def create_app(test_config=None):
         app.config.update(test_config['DB_CONFIG'])
     manager_db.init_app(app)
 
-    # register blueprints
+    # register controller
     api.register_blueprint(cars_blp)
     api.register_blueprint(dropoff_blp)
     api.register_blueprint(journey_blp)

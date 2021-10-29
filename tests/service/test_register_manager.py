@@ -1,10 +1,10 @@
-from src.logic.register_manager import RegisterManager
+from src.service.register_manager import RegisterManager
 from src.model.car import Car
 from src.model.journey_group import JourneyGroup
 
 
 def test_register_dropoff_journey(app):
-    """It should test the register/dropoff logic"""
+    """It should test the register/dropoff service"""
     with app.app_context():
         # insert two cars
         car1 = Car(**{'id': 1, 'seats': 4})
@@ -35,7 +35,7 @@ def test_register_dropoff_journey(app):
 
 
 def test_register_dropoff_journey_with_wait(app):
-    """It should test the register/drop-off logic with waiting groups"""
+    """It should test the register/drop-off service with waiting groups"""
     with app.app_context():
         # insert two cars
         car1 = Car(**{'id': 1, 'seats': 4})

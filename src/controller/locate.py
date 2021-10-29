@@ -1,7 +1,7 @@
 from flask_smorest import Blueprint
 
-from src.blueprints.shared_schemas import GroupIdSchema, CarSchema
-from src.blueprints.utils import empty_response
+from src.controller.shared_schemas import GroupIdSchema, CarSchema
+from src.controller.utils import empty_response
 from src.model.car import Car
 from src.model.journey_group import JourneyGroup
 

@@ -1,10 +1,10 @@
 import sqlite3
 from flask_smorest import Blueprint, abort
 
-from src.blueprints.shared_schemas import GroupIdSchema
-from src.blueprints.utils import empty_response
+from src.controller.shared_schemas import GroupIdSchema
+from src.controller.utils import empty_response
 from src.model.journey_group import JourneyGroup
-from src.logic.register_manager import RegisterManager
+from src.service.register_manager import RegisterManager
 
 blp = Blueprint('dropoff', 'dropoff', url_prefix='/dropoff', description='Operations on dropoff')
 
