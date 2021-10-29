@@ -1,0 +1,5 @@
+Flask==2.0.1
+flask-smorest==0.31.2
+pytest==6.2.2
+pytest-flask==1.2.0
+gunicorn==19.9.*
