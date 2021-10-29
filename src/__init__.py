@@ -4,10 +4,9 @@ from flask_smorest import Api
 import config.flask_config as flask_config
 import config.db_config as db_config
 import src.db.manager_db as manager_db
-from src.controller.cars import blp as cars_blp
-from src.controller.dropoff import blp as dropoff_blp
-from src.controller.journey import blp as journey_blp
-from src.controller.locate import blp as locate_blp
+from src.controller.author_controller import blp as author_blp
+from src.controller.book_controller import blp as book_blp
+from src.controller.category_controller import blp as category_blp
 
 
 def create_app(test_config=None):
@@ -25,11 +24,10 @@ def create_app(test_config=None):
         app.config.update(test_config['DB_CONFIG'])
     manager_db.init_app(app)
 
-    # register controller
-    api.register_blueprint(cars_blp)
-    api.register_blueprint(dropoff_blp)
-    api.register_blueprint(journey_blp)
-    api.register_blueprint(locate_blp)
+    # register controllers
+    api.register_blueprint(author_blp)
+    api.register_blueprint(book_blp)
+    api.register_blueprint(category_blp)
 
     # Health check endpoint
     @app.route("/status", methods=['GET'])

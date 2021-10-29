@@ -58,6 +58,12 @@ class BaseRepository(object):
     def get_dataclass(cls):
         raise NotImplementedError
 
+    def get_id_field_name(self):
+        """
+        Get the ID field name (default `id`), override if necessary
+        """
+        return 'id'
+
     def insert(self, commit=False):
         """
         Insert the object model in database
@@ -71,14 +77,23 @@ class BaseRepository(object):
 
     def get_by_id(self, item_id):
         """
-        Get an entity by id
+        Get an entity by its id
         :param item_id:
         :return:
         """
-        sql = f'select * from {self.get_table()} where id = ?'
+        sql = f'select * from {self.get_table()} where {self.get_id_field_name()} = ?'
         cursor = self._execute(sql, (item_id,))
         result = cursor.fetchone()
         return None if result is None else self.get_dataclass()(**result)
+
+    def delete_by_id(self, item_id):
+        """
+        Delete an entity by its id
+        :param item_id:
+        :return:
+        """
+        sql = f'delete from {self.get_table()} where {self.get_id_field_name()} = ?'
+        self._execute(sql, (item_id,))
 
     def count_rows(self):
         """

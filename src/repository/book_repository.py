@@ -16,3 +16,6 @@ class BookRepository(BaseRepository):
     @classmethod
     def get_dataclass(cls):
         return Book
+
+    def get_id_field_name(self):
+        return 'isbn'

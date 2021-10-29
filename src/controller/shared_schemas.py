@@ -1,15 +1,35 @@
 import marshmallow as ma
 
 
-class GroupSchema(ma.Schema):
-    id = ma.fields.Integer(required=True, validate=lambda v: v > 0)
-    people = ma.fields.Integer(required=True, validate=lambda v: 1 <= v <= 6)
+class BookSchema(ma.Schema):
+    isbn = ma.fields.String(required=True)
+    title = ma.fields.String(required=True)
+    date_of_publication = ma.fields.Date(required=True)
+    authors = ma.fields.List(ma.fields.Integer, required=True)
+    categories = ma.fields.List(ma.fields.Integer, required=True)
 
 
-class GroupIdSchema(ma.Schema):
-    ID = ma.fields.Integer(required=True, validate=lambda v: v > 0)
+class BookQueryArgsSchema(ma.Schema):
+    # TODO
+    pass
 
 
-class CarSchema(ma.Schema):
-    id = ma.fields.Integer(required=True, validate=lambda v: v > 0)
-    seats = ma.fields.Integer(required=True, validate=lambda v: 4 <= v <= 6)
+class AuthorSchema(ma.Schema):
+    id = ma.fields.Integer(required=True)
+    name = ma.fields.String(required=True)
+    date_of_birth = ma.fields.Date()
+
+
+class AuthorQueryArgsSchema(ma.Schema):
+    # TODO
+    pass
+
+
+class CategorySchema(ma.Schema):
+    id = ma.fields.Integer(required=True)
+    name = ma.fields.String(required=True)
+
+
+class CategoryQueryArgsSchema(ma.Schema):
+    # TODO
+    pass
