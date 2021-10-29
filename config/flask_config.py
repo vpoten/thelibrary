@@ -1,4 +1,4 @@
-APP_NAME = 'Car Pooling'
+APP_NAME = 'The Library'
 
 OPENAPI_CONFIG = {
     'API_TITLE': APP_NAME,
