@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from dataclasses import dataclass
 
 
@@ -7,3 +7,4 @@ class Author:
     id: int
     name: str
     date_of_birth: date
+    created: datetime

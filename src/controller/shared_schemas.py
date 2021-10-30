@@ -7,6 +7,7 @@ class BookSchema(ma.Schema):
     date_of_publication = ma.fields.Date(required=True)
     authors = ma.fields.List(ma.fields.Integer, required=True)
     categories = ma.fields.List(ma.fields.Integer, required=True)
+    created = ma.fields.DateTime(dump_only=True)
 
 
 class BookQueryArgsSchema(ma.Schema):
@@ -15,9 +16,10 @@ class BookQueryArgsSchema(ma.Schema):
 
 
 class AuthorSchema(ma.Schema):
-    id = ma.fields.Integer(required=True)
+    id = ma.fields.Integer(dump_only=True)
     name = ma.fields.String(required=True)
     date_of_birth = ma.fields.Date()
+    created = ma.fields.DateTime(dump_only=True)
 
 
 class AuthorQueryArgsSchema(ma.Schema):
@@ -26,8 +28,9 @@ class AuthorQueryArgsSchema(ma.Schema):
 
 
 class CategorySchema(ma.Schema):
-    id = ma.fields.Integer(required=True)
+    id = ma.fields.Integer(dump_only=True)
     name = ma.fields.String(required=True)
+    created = ma.fields.DateTime(dump_only=True)
 
 
 class CategoryQueryArgsSchema(ma.Schema):
