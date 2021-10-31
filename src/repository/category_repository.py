@@ -3,9 +3,9 @@ from src.repository.base_repository import BaseRepository
 
 
 class CategoryRepository(BaseRepository):
-    def _get_insert_parameters(self):
-        # TODO
-        pass
+    def _get_insert_parameters(self, category):
+        sql = f'insert into {self.get_table()} (name) values (?)'
+        return sql, (category.name,)
 
     @classmethod
     def get_table(cls):

@@ -45,7 +45,12 @@ class BaseRepository(object):
         db.commit()
 
     @abstractmethod
-    def _get_insert_parameters(self):
+    def _get_insert_parameters(self, entity):
+        """
+        Build a tuple with the sql query for insertion and the column values to insert
+        :param entity:
+        :return: a pair tuple (insert_sql, values)
+        """
         raise NotImplementedError
 
     @classmethod
@@ -64,13 +69,14 @@ class BaseRepository(object):
         """
         return 'id'
 
-    def insert(self, commit=False):
+    def insert(self, entity, commit=False):
         """
         Insert the object model in database
+        :param entity: a `@dataclass` entity
         :param commit:
         :return:
         """
-        sql, parameters = self._get_insert_parameters()
+        sql, parameters = self._get_insert_parameters(entity)
         self._execute(sql, parameters)
         if commit is True:
             self.commit()
