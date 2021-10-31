@@ -4,14 +4,14 @@ from flask_smorest import Blueprint, abort
 import sqlite3
 
 from src.exception.item_not_found import ItemNotFoundError
-from src.controller.shared_schemas import CategorySchema, CategoryQueryArgsSchema
+from src.controller.shared_schemas import CategorySchema, CategoriesQueryArgsSchema
 
 blp = Blueprint('categories', 'categories', url_prefix='/api/categories', description='Operations on categories')
 
 
 @blp.route("/")
 class Categories(MethodView):
-    @blp.arguments(CategoryQueryArgsSchema, location="query")
+    @blp.arguments(CategoriesQueryArgsSchema, location="query")
     @blp.response(200, CategorySchema(many=True))
     def get(self, args):
         """List Categories"""

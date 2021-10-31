@@ -3,14 +3,14 @@ from flask_smorest import Blueprint, abort
 import sqlite3
 
 from src.exception.item_not_found import ItemNotFoundError
-from src.controller.shared_schemas import AuthorSchema, AuthorQueryArgsSchema
+from src.controller.shared_schemas import AuthorSchema, AuthorsQueryArgsSchema
 
 blp = Blueprint('authors', 'authors', url_prefix='/api/authors', description='Operations on authors')
 
 
 @blp.route("/")
 class Authors(MethodView):
-    @blp.arguments(AuthorQueryArgsSchema, location="query")
+    @blp.arguments(AuthorsQueryArgsSchema, location="query")
     @blp.response(200, AuthorSchema(many=True))
     def get(self, args):
         """List Authors"""

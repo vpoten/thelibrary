@@ -56,11 +56,17 @@ class BaseRepository(object):
     @classmethod
     @abstractmethod
     def get_table(cls):
+        """
+        Get table name, to override
+        """
         raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def get_dataclass(cls):
+        """
+        Get repository entity class, to override
+        """
         raise NotImplementedError
 
     def get_id_field_name(self):
@@ -106,8 +112,23 @@ class BaseRepository(object):
         Count rows in table
         :return: {int}
         """
-
         sql = f'select count(*) as total from {self.get_table()}'
         cursor = self._execute(sql)
         result = cursor.fetchone()
         return None if result is None else result['total']
+
+    def list(self, page=0, rows_per_page=100):
+        """
+        List entities with pagination
+        :param page: page to retrieve, zero indexed
+        :param rows_per_page: rows per page
+        :return: list of instances of class `self.get_dataclass()`
+        """
+        if rows_per_page == -1:
+            sql = f'select * from {self.get_table()}'
+        else:
+            sql = f'select * from {self.get_table()} limit {rows_per_page} offset {page * rows_per_page}'
+
+        cursor = self._execute(sql)
+        items = [self.get_dataclass()(**row) for row in cursor]
+        return items

@@ -1,6 +1,14 @@
 import marshmallow as ma
 
 
+class BaseListQueryArgsSchema(ma.Schema):
+    """
+    Base schema for list operations
+    """
+    page = ma.fields.Integer(default=0, validate=lambda v: v >= 0)
+    rows_per_page = ma.fields.Integer(default=50, validate=lambda v: 1 <= v <= 200)
+
+
 class BookSchema(ma.Schema):
     isbn = ma.fields.String(required=True)
     title = ma.fields.String(required=True)
@@ -10,8 +18,7 @@ class BookSchema(ma.Schema):
     created = ma.fields.DateTime(dump_only=True)
 
 
-class BookQueryArgsSchema(ma.Schema):
-    # TODO
+class BooksQueryArgsSchema(BaseListQueryArgsSchema):
     pass
 
 
@@ -22,8 +29,7 @@ class AuthorSchema(ma.Schema):
     created = ma.fields.DateTime(dump_only=True)
 
 
-class AuthorQueryArgsSchema(ma.Schema):
-    # TODO
+class AuthorsQueryArgsSchema(BaseListQueryArgsSchema):
     pass
 
 
@@ -33,6 +39,5 @@ class CategorySchema(ma.Schema):
     created = ma.fields.DateTime(dump_only=True)
 
 
-class CategoryQueryArgsSchema(ma.Schema):
-    # TODO
+class CategoriesQueryArgsSchema(BaseListQueryArgsSchema):
     pass
