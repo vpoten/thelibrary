@@ -4,8 +4,10 @@ from src.repository.base_repository import BaseRepository
 
 class BookRepository(BaseRepository):
     def _get_insert_parameters(self, book):
-        sql = f'insert into {self.get_table()} (isbn, title, date_of_publication) values (?, ?, ?)'
-        return sql, (book.isbn, book.title, book.date_of_publication)
+        return '(isbn, title, date_of_publication) values (?, ?, ?)', (book.isbn, book.title, book.date_of_publication)
+
+    def _get_update_parameters(self, book):
+        return 'title=?, date_of_publication=?', (book.title, book.date_of_publication)
 
     @classmethod
     def get_table(cls):

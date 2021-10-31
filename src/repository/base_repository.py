@@ -47,9 +47,18 @@ class BaseRepository(object):
     @abstractmethod
     def _get_insert_parameters(self, entity):
         """
-        Build a tuple with the sql query for insertion and the column values to insert
-        :param entity:
+        Build a tuple with the sql sub-query for insertion and the column values to insert
+        :param entity: data-model instance
         :return: a pair tuple (insert_sql, values)
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _get_update_parameters(self, entity):
+        """
+        Build a tuple with the sql sub-query for update and the column values to insert
+        :param entity: data-model instance
+        :return: a pair tuple (update_sql, values)
         """
         raise NotImplementedError
 
@@ -83,7 +92,20 @@ class BaseRepository(object):
         :return:
         """
         sql, parameters = self._get_insert_parameters(entity)
-        self._execute(sql, parameters)
+        self._execute(f'insert into {self.get_table()} {sql}', parameters)
+        if commit is True:
+            self.commit()
+
+    def update(self, entity, commit=False):
+        """
+        Update the object model in database
+        :param entity: a `@dataclass` entity
+        :param commit:
+        :return:
+        """
+        sql, parameters = self._get_update_parameters(entity)
+        parameters += (getattr(entity, self.get_id_field_name()),)
+        self._execute(f'update {self.get_table()} set {sql} where {self.get_id_field_name()}=?', parameters)
         if commit is True:
             self.commit()
 
