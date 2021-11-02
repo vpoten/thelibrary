@@ -30,7 +30,7 @@ class AuthorSchema(ma.Schema):
 
 
 class AuthorsQueryArgsSchema(BaseListQueryArgsSchema):
-    pass
+    isbn = ma.fields.String(description="Filter authors by book id")
 
 
 class CategorySchema(ma.Schema):
@@ -40,4 +40,4 @@ class CategorySchema(ma.Schema):
 
 
 class CategoriesQueryArgsSchema(BaseListQueryArgsSchema):
-    pass
+    isbn = ma.fields.String(description="Filter categories by book id")

@@ -5,19 +5,20 @@ from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import CategorySchema, CategoriesQueryArgsSchema
 from src.repository.category_repository import CategoryRepository
 from src.service.base_service import BaseService
+from src.service.category_service import CategoryService
 
 blp = Blueprint('categories', 'categories', url_prefix='/api/categories', description='Operations on categories')
 
 
 @blp.route("/")
 class Categories(MethodView):
-    service = BaseService(CategoryRepository())
+    service = CategoryService(CategoryRepository())
 
     @blp.arguments(CategoriesQueryArgsSchema, location="query")
     @blp.response(200, CategorySchema(many=True))
     def get(self, args):
         """List Categories"""
-        return self.service.list(args.get('page'), args.get('rows_per_page'))
+        return self.service.list(page=args.get('page'), rows_per_page=args.get('rows_per_page'), isbn=args.get('isbn'))
 
     @blp.arguments(CategorySchema)
     @blp.response(201, CategorySchema)

@@ -4,14 +4,14 @@ from flask_smorest import Blueprint, abort
 from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import BookSchema, BooksQueryArgsSchema
 from src.repository.book_repository import BookRepository
-from src.service.base_service import BaseService
+from src.service.book_service import BookService
 
 blp = Blueprint('books', 'books', url_prefix='/api/books', description='Operations on books')
 
 
 @blp.route("/")
 class Books(MethodView):
-    service = BaseService(BookRepository())
+    service = BookService(BookRepository())
 
     @blp.arguments(BooksQueryArgsSchema, location="query")
     @blp.response(200, BookSchema(many=True))
@@ -28,7 +28,7 @@ class Books(MethodView):
 
 @blp.route("/<isbn>")
 class BooksById(MethodView):
-    service = BaseService(BookRepository())
+    service = BookService(BookRepository())
 
     @blp.response(200, BookSchema)
     def get(self, isbn):

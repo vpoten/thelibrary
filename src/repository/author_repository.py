@@ -18,6 +18,6 @@ class AuthorRepository(BaseRepository):
     def get_dataclass(cls):
         return Author
 
-    def get_authors_by_id(self, isbn):
+    def get_authors_by_isbn(self, isbn):
         book_authors = BookAuthorRepository(self.get_db()).get_book_authors(isbn)
         return [self.get_by_id(ba.author_id) for ba in book_authors]
