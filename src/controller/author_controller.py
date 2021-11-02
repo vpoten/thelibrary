@@ -1,59 +1,56 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-import sqlite3
 
 from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import AuthorSchema, AuthorsQueryArgsSchema
+from src.repository.author_repository import AuthorRepository
+from src.service.base_service import BaseService
 
 blp = Blueprint('authors', 'authors', url_prefix='/api/authors', description='Operations on authors')
 
 
 @blp.route("/")
 class Authors(MethodView):
+    service = BaseService(AuthorRepository())
+
     @blp.arguments(AuthorsQueryArgsSchema, location="query")
     @blp.response(200, AuthorSchema(many=True))
     def get(self, args):
         """List Authors"""
-        # TODO
-        return []
+        return self.service.list(args.get('page'), args.get('rows_per_page'))
 
     @blp.arguments(AuthorSchema)
     @blp.response(201, AuthorSchema)
     def post(self, new_data):
         """Add a new Author"""
-        # TODO
-        return None
+        return self.service.create(new_data)
 
 
 @blp.route("/<int:author_id>")
 class AuthorsById(MethodView):
+    service = BaseService(AuthorRepository())
+
     @blp.response(200, AuthorSchema)
     def get(self, author_id):
         """Get Author by ID"""
         try:
-            # TODO
-            pass
+            return self.service.retrieve(author_id)
         except ItemNotFoundError:
             abort(404, message="Item not found.")
-        return None
 
     @blp.arguments(AuthorSchema)
     @blp.response(200, AuthorSchema)
     def put(self, update_data, author_id):
         """Update existing Author"""
         try:
-            # TODO
-            pass
+            return self.service.update(author_id, update_data)
         except ItemNotFoundError:
             abort(404, message="Item not found.")
-        # TODO
-        return None
 
     @blp.response(204)
     def delete(self, author_id):
         """Delete Author"""
         try:
-            # TODO
-            pass
+            return self.service.delete(author_id)
         except ItemNotFoundError:
             abort(404, message="Item not found.")

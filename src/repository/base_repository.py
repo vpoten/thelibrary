@@ -1,6 +1,7 @@
 from abc import abstractmethod
 
 import src.db.manager_db as manager_db
+from src.exception.item_not_found import ItemNotFoundError
 
 
 class BaseRepository(object):
@@ -106,6 +107,7 @@ class BaseRepository(object):
         sql, parameters = self._get_update_parameters(entity)
         parameters += (getattr(entity, self.get_id_field_name()),)
         self._execute(f'update {self.get_table()} set {sql} where {self.get_id_field_name()}=?', parameters)
+        # TODO raise ItemNotFoundError
         if commit is True:
             self.commit()
 
@@ -118,16 +120,22 @@ class BaseRepository(object):
         sql = f'select * from {self.get_table()} where {self.get_id_field_name()} = ?'
         cursor = self._execute(sql, (item_id,))
         result = cursor.fetchone()
-        return None if result is None else self.get_dataclass()(**result)
+        if result is None:
+            raise ItemNotFoundError()
+        return self.get_dataclass()(**result)
 
-    def delete_by_id(self, item_id):
+    def delete_by_id(self, item_id, commit=False):
         """
         Delete an entity by its id
         :param item_id:
+        :param commit:
         :return:
         """
         sql = f'delete from {self.get_table()} where {self.get_id_field_name()} = ?'
+        # TODO raise ItemNotFoundError
         self._execute(sql, (item_id,))
+        if commit is True:
+            self.commit()
 
     def count_rows(self):
         """
