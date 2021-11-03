@@ -3,16 +3,14 @@ from flask_smorest import Blueprint, abort
 
 from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import AuthorSchema, AuthorsQueryArgsSchema
-from src.repository.author_repository import AuthorRepository
 from src.service.author_service import AuthorService
-from src.service.base_service import BaseService
 
 blp = Blueprint('authors', 'authors', url_prefix='/api/authors', description='Operations on authors')
 
 
 @blp.route("/")
 class Authors(MethodView):
-    service = AuthorService(AuthorRepository())
+    service = AuthorService()
 
     @blp.arguments(AuthorsQueryArgsSchema, location="query")
     @blp.response(200, AuthorSchema(many=True))
@@ -29,7 +27,7 @@ class Authors(MethodView):
 
 @blp.route("/<int:author_id>")
 class AuthorsById(MethodView):
-    service = BaseService(AuthorRepository())
+    service = AuthorService()
 
     @blp.response(200, AuthorSchema)
     def get(self, author_id):

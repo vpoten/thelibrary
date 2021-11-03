@@ -3,8 +3,6 @@ from flask_smorest import Blueprint, abort
 
 from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import CategorySchema, CategoriesQueryArgsSchema
-from src.repository.category_repository import CategoryRepository
-from src.service.base_service import BaseService
 from src.service.category_service import CategoryService
 
 blp = Blueprint('categories', 'categories', url_prefix='/api/categories', description='Operations on categories')
@@ -12,7 +10,7 @@ blp = Blueprint('categories', 'categories', url_prefix='/api/categories', descri
 
 @blp.route("/")
 class Categories(MethodView):
-    service = CategoryService(CategoryRepository())
+    service = CategoryService()
 
     @blp.arguments(CategoriesQueryArgsSchema, location="query")
     @blp.response(200, CategorySchema(many=True))
@@ -29,7 +27,7 @@ class Categories(MethodView):
 
 @blp.route("/<int:category_id>")
 class CategoriesById(MethodView):
-    service = BaseService(CategoryRepository())
+    service = CategoryService()
 
     @blp.response(200, CategorySchema)
     def get(self, category_id):

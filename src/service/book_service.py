@@ -1,17 +1,22 @@
+from src.entity.author import Author
+from src.entity.book import Book
+from src.entity.book_author import BookAuthor
+from src.entity.book_category import BookCategory
+from src.entity.category import Category
+from src.repository.book_author_repository import BookAuthorRepository
+from src.repository.book_category_repository import BookCategoryRepository
 from src.repository.book_repository import BookRepository
 from src.service.base_service import BaseService
 
 
 class BookService(BaseService):
-    def __init__(self, repository: BookRepository):
-        super().__init__(repository)
+    def __init__(self):
+        super().__init__(BookRepository())
 
-    def create(self, data):
-        super().create(data)
-        # TODO
-        pass
+    def add_author(self, book: Book, author: Author):
+        book_authors = BookAuthorRepository(self.repository.get_db())
+        book_authors.insert(BookAuthor(isbn=book.isbn, author_id=author.id), True)
 
-    def update(self, item_id, data):
-        super().update(item_id, data)
-        # TODO
-        pass
+    def add_category(self, book: Book, category: Category):
+        book_categories = BookCategoryRepository(self.repository.get_db())
+        book_categories.insert(BookCategory(isbn=book.isbn, category_id=category.id), True)
