@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
 from src.exception.item_not_found import ItemNotFoundError
-from src.controller.shared_schemas import BookSchema, BooksQueryArgsSchema
+from src.controller.shared_schemas import BookSchema, BooksQueryArgsSchema, AuthorSchema, CategorySchema
 from src.repository.book_repository import BookRepository
 from src.service.book_service import BookService
 
@@ -52,5 +52,43 @@ class BooksById(MethodView):
         """Delete Book"""
         try:
             return self.service.delete(isbn)
+        except ItemNotFoundError:
+            abort(404, message="Item not found.")
+
+
+@blp.route("/<isbn>/categories")
+class BooksCategories(MethodView):
+    @blp.response(200, AuthorSchema(many=True))
+    def get(self, isbn):
+        """Get Book categories"""
+        try:
+            pass
+        except ItemNotFoundError:
+            abort(404, message="Item not found.")
+
+    @blp.arguments(AuthorSchema)
+    @blp.response(201, AuthorSchema)
+    def post(self, new_data):
+        try:
+            pass
+        except ItemNotFoundError:
+            abort(404, message="Item not found.")
+
+
+@blp.route("/<isbn>/authors")
+class BooksAuthors(MethodView):
+    @blp.response(200, CategorySchema(many=True))
+    def get(self, isbn):
+        """Get Book authors"""
+        try:
+            pass
+        except ItemNotFoundError:
+            abort(404, message="Item not found.")
+
+    @blp.arguments(CategorySchema)
+    @blp.response(201, CategorySchema)
+    def post(self, new_data):
+        try:
+            pass
         except ItemNotFoundError:
             abort(404, message="Item not found.")
