@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This service provides a REST API for basic library management and is intended to be used as an API.
+This service provides a REST API for basic library management.
 
 A [Swagger UI](#api-swagger-interface) is provided as documentation and working platform.
 
@@ -74,3 +74,106 @@ Normally:
 
 [http://127.0.0.1:5000/apidocs/swagger#/](http://127.0.0.1:5000/apidocs/swagger#/)
 
+
+## API endpoints
+
+
+### Authors
+
+#### GET /api/authors
+
+List authors
+
+#### POST /api/authors
+
+Add a new author
+
+#### GET /api/authors/{author_id}
+
+Get author by id
+
+#### PUT /api/authors/{author_id}
+
+Update an author
+
+#### DELETE /api/authors/{author_id}
+
+Delete an author
+
+#### GET /api/authors/{author_id}/books
+
+Get the books associated with a given author
+
+
+### Categories
+
+#### GET /api/categories
+
+List categories
+
+#### POST /api/categories
+
+Add a new category
+
+#### GET /api/categories/{category_id}
+
+Get category by id
+
+#### PUT /api/categories/{category_id}
+
+Update a category
+
+#### DELETE /api/categories/{category_id}
+
+Delete a category
+
+#### GET /api/categories/{category_id}/books
+
+Get the books associated with a given category
+
+
+### Books
+
+#### GET /api/books
+
+List books
+
+#### POST /api/books
+
+Add a new book
+
+#### GET /api/books/{isbn}
+
+Get book by id
+
+#### PUT /api/books/{isbn}
+
+Update a book
+
+#### DELETE /api/books/{isbn}
+
+Delete a book
+
+#### GET /api/books/{isbn}/categories
+
+Get book categories
+
+#### POST /api/books/{isbn}/categories/{category_id}
+
+Associate category to book
+
+#### DELETE /api/books/{isbn}/categories/{category_id}
+
+Disassociate category to book
+
+#### GET /api/books/{isbn}/authors
+
+Get book authors
+
+#### POST /api/books/{isbn}/authors/{author_id}
+
+Associate author to book
+
+#### DELETE /api/books/{isbn}/authors/{author_id}
+
+Disassociate author to book

@@ -39,3 +39,23 @@ class BookService(BaseService):
         elif author is not None:
             return self.repository.get_books_by_author_id(author.id)
         return self.repository.list(page=page, rows_per_page=rows_per_page)
+
+    def remove_author(self, book: Book, author: Author):
+        """
+        Disassociate an author and a book
+        :param book:
+        :param author:
+        :return:
+        """
+        book_authors = BookAuthorRepository(self.repository.get_db())
+        book_authors.delete(BookAuthor(isbn=book.isbn, author_id=author.id), True)
+
+    def remove_category(self, book: Book, category: Category):
+        """
+        Disassociate a category and a book
+        :param book:
+        :param category:
+        :return:
+        """
+        book_categories = BookCategoryRepository(self.repository.get_db())
+        book_categories.delete(BookCategory(isbn=book.isbn, category_id=category.id), True)

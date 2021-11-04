@@ -33,11 +33,12 @@ class BookCategoryRepository(BaseRepository):
         search_fields = {'isbn': isbn, 'category_id': category_id}
         return self.filter_by_search_fields(search_fields)
 
-    def delete(self, book_category):
+    def delete(self, book_category, commit=True):
         """
         Deletes a BookCategory relationship
+        :param commit:
         :param book_category:
         :return:
         """
-        sql = f'delete from {self.get_table()} where isbn=? and category_id=?'
-        self._execute(sql, (book_category.isbn, book_category.category_id))
+        search_fields = {'isbn': book_category.isbn, 'category_id': book_category.category_id}
+        self.delete_by_search_fields(search_fields, commit=commit)

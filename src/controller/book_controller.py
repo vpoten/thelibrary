@@ -89,6 +89,20 @@ def add_category(isbn, category_id):
         abort(400, message=str(err))
 
 
+@blp.route("/<isbn>/categories/<int:category_id>", methods=['DELETE'])
+@blp.response(204)
+def remove_category(isbn, category_id):
+    """Disassociate category and book"""
+    try:
+        book = book_service.retrieve(isbn)
+        category = category_service.retrieve(category_id)
+        book_service.remove_category(book, category)
+    except ItemNotFoundError:
+        abort(404, message="Item not found.")
+    except DatabaseError as err:
+        abort(400, message=str(err))
+
+
 @blp.route("/<isbn>/authors", methods=['GET'])
 @blp.response(200, AuthorSchema(many=True))
 def get_authors(isbn):
@@ -109,6 +123,20 @@ def add_author(isbn, author_id):
         author = author_service.retrieve(author_id)
         book_service.add_author(book, author)
         return author
+    except ItemNotFoundError:
+        abort(404, message="Item not found.")
+    except DatabaseError as err:
+        abort(400, message=str(err))
+
+
+@blp.route("/<isbn>/authors/<int:author_id>", methods=['DELETE'])
+@blp.response(204)
+def remove_author(isbn, author_id):
+    """Disassociate author and book"""
+    try:
+        book = book_service.retrieve(isbn)
+        author = author_service.retrieve(author_id)
+        book_service.remove_author(book, author)
     except ItemNotFoundError:
         abort(404, message="Item not found.")
     except DatabaseError as err:

@@ -190,6 +190,26 @@ class BaseRepository(object):
         if commit is True:
             self.commit()
 
+    def delete_by_search_fields(self, search_fields, commit=False):
+        """
+        Delete an entity of repository by search fields
+        :param search_fields: dict
+        :param commit:
+        :param operator:
+        :return: list of entities
+        """
+        where_clause, parameters = self._build_where_clause(search_fields, operator='and')
+
+        if len(parameters) < len(search_fields):
+            raise ItemNotFoundError()  # force non ambiguity
+
+        sql = f'delete from {self.get_table()} where {where_clause}'
+        cursor = self._execute(sql, parameters=tuple(parameters))
+        if cursor.rowcount == 0:
+            raise ItemNotFoundError()
+        if commit is True:
+            self.commit()
+
     def count_rows(self):
         """
         Count rows in table
