@@ -1,6 +1,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
+from src.exception.database_error import DatabaseError
 from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import BookSchema, BooksQueryArgsSchema, AuthorSchema, CategorySchema
 from src.service.book_service import BookService
@@ -26,7 +27,10 @@ class Books(MethodView):
     @blp.response(201, BookSchema)
     def post(self, new_data):
         """Add a new Book"""
-        return book_service.create(new_data)
+        try:
+            return book_service.create(new_data)
+        except DatabaseError as err:
+            abort(400, message=str(err))
 
 
 @blp.route("/<isbn>")
@@ -47,6 +51,8 @@ class BooksById(MethodView):
             return book_service.update(isbn, update_data)
         except ItemNotFoundError:
             abort(404, message="Item not found.")
+        except DatabaseError as err:
+            abort(400, message=str(err))
 
     @blp.response(204)
     def delete(self, isbn):

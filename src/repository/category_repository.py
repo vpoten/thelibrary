@@ -19,5 +19,5 @@ class CategoryRepository(BaseRepository):
         return Category
 
     def get_categories_by_isbn(self, isbn):
-        book_categories = BookCategoryRepository(self.get_db()).get_book_categories(isbn)
+        book_categories = BookCategoryRepository(self.get_db()).get_book_categories(isbn=isbn)
         return [self.get_by_id(bc.category_id) for bc in book_categories]

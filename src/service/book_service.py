@@ -32,3 +32,10 @@ class BookService(BaseService):
         """
         book_categories = BookCategoryRepository(self.repository.get_db())
         book_categories.insert(BookCategory(isbn=book.isbn, category_id=category.id), True)
+
+    def list(self, page=0, rows_per_page=100, category=None, author=None):
+        if category is not None:
+            return self.repository.get_books_by_category_id(category.id)
+        elif author is not None:
+            return self.repository.get_books_by_author_id(author.id)
+        return self.repository.list(page=page, rows_per_page=rows_per_page)

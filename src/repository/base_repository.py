@@ -1,7 +1,9 @@
 from abc import abstractmethod
+import sqlite3 as sqlite3
 
 import src.db.manager_db as manager_db
 from src.exception.item_not_found import ItemNotFoundError
+from src.exception.database_error import DatabaseError
 
 
 class BaseRepository(object):
@@ -21,13 +23,16 @@ class BaseRepository(object):
 
     def _execute(self, sql, parameters=None, commit=False):
         db = self.get_db()
-        if parameters is None:
-            cursor = db.execute(sql)
-        else:
-            cursor = db.execute(sql, parameters)
-        if commit is True:
-            db.commit()
-        return cursor
+        try:
+            if parameters is None:
+                cursor = db.execute(sql)
+            else:
+                cursor = db.execute(sql, parameters)
+            if commit is True:
+                db.commit()
+            return cursor
+        except sqlite3.Error as ex:
+            raise DatabaseError(str(ex))
 
     def _executemany(self, sql, parameters=None, commit=False):
         db = self.get_db()
@@ -43,6 +48,31 @@ class BaseRepository(object):
         db.executescript(sql_script)
         if commit is True:
             db.commit()
+
+    @classmethod
+    def _build_where_clause(cls, search_fields, operator='and'):
+        """
+        Utility method for sql where filtering
+        :param search_fields:
+        :param operator:
+        :return: tuple with where_clause and parameters
+        """
+        where_clause = f' {operator} '.join([f'{p[0]}=?' for p in search_fields.items() if p[1] is not None])
+        parameters = [p[1] for p in search_fields.items() if p[1] is not None]
+        return where_clause, parameters
+
+    def filter_by_search_fields(self, search_fields, operator='and'):
+        """
+        Filter repository by search fields
+        :param search_fields: dict
+        :param operator:
+        :return: list of entities
+        """
+        where_clause, parameters = self._build_where_clause(search_fields, operator=operator)
+        sql = f'select * from {self.get_table()} where {where_clause}'
+        cursor = self._execute(sql, parameters=tuple(parameters))
+        items = [self.get_dataclass()(**row) for row in cursor]
+        return items
 
     def commit(self):
         db = self.get_db()

@@ -20,16 +20,15 @@ class BookAuthorRepository(BaseRepository):
     def get_id_field_name(self):
         raise NotImplementedError
 
-    def get_book_authors(self, isbn):
+    def get_book_authors(self, isbn, author_id=None):
         """
         Get the BookAuthor list associated to the given isbn
         :param isbn:
+        :param author_id:
         :return: list of BookAuthor instances
         """
-        sql = f'select * from {self.get_table()} where isbn=?'
-        cursor = self._execute(sql, parameters=(isbn,))
-        items = [self.get_dataclass()(**row) for row in cursor]
-        return items
+        search_fields = {'isbn': isbn, 'author_id': author_id}
+        return self.filter_by_search_fields(search_fields)
 
     def delete(self, book_author):
         """

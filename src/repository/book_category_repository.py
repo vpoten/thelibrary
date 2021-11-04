@@ -20,16 +20,15 @@ class BookCategoryRepository(BaseRepository):
     def get_id_field_name(self):
         raise NotImplementedError
 
-    def get_book_categories(self, isbn):
+    def get_book_categories(self, isbn, category_id=None):
         """
         Get the BookCategory list associated to the given isbn
         :param isbn:
+        :param category_id:
         :return: list of BookCategory instances
         """
-        sql = f'select * from {self.get_table()} where isbn=?'
-        cursor = self._execute(sql, parameters=(isbn,))
-        items = [self.get_dataclass()(**row) for row in cursor]
-        return items
+        search_fields = {'isbn': isbn, 'category_id': category_id}
+        return self.filter_by_search_fields(search_fields)
 
     def delete(self, book_category):
         """
