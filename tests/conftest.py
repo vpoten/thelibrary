@@ -1,4 +1,6 @@
 import pytest
+import os
+import tempfile
 
 from src import create_app
 from src.db.manager_db import init_db
@@ -9,11 +11,12 @@ def app():
     """
     Returns the flask app
     """
+    db_fd, db_path = tempfile.mkstemp()
 
     test_config = {
         'TESTING': True,
         'DB_CONFIG': {
-            'DATABASE': ':memory:'
+            'DATABASE': db_path
         }
     }
 
@@ -21,7 +24,10 @@ def app():
 
     with app.app_context():
         init_db()
-    return app
+    yield app
+
+    os.close(db_fd)
+    os.unlink(db_path)
 
 
 @pytest.fixture
@@ -30,11 +36,12 @@ def client():
     Returns the flask client for blueprint testing
     :return:
     """
+    db_fd, db_path = tempfile.mkstemp()
 
     test_config = {
         'TESTING': True,
         'DB_CONFIG': {
-            'DATABASE': ':memory:'
+            'DATABASE': db_path
         }
     }
 
@@ -43,4 +50,7 @@ def client():
     with app.test_client() as client:
         with app.app_context():
             init_db()
-        return client
+        yield client
+
+    os.close(db_fd)
+    os.unlink(db_path)

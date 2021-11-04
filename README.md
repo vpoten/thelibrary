@@ -1,6 +1,6 @@
 # TheLibrary
 
-## API
+## Abstract
 
 This service provides a REST API for basic library management.
 
@@ -12,6 +12,23 @@ The stack used to create this API is:
 * flask-smorest
 * sqlite
 * pytest
+
+## Docker execution of the app
+
+#### Build image
+```
+docker build . -t thelibrary:latest
+```
+
+#### Run server
+```
+docker run thelibrary:latest
+```
+
+#### Run tests
+```
+docker run thelibrary:latest pytest tests/
+```
 
 ## Non docker execution of the project
 

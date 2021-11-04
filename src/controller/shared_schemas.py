@@ -9,8 +9,8 @@ class BaseListQueryArgsSchema(ma.Schema):
     """
     Base schema for list operations
     """
-    page = ma.fields.Integer(missing=0, validate=lambda v: v >= 0)
-    rows_per_page = ma.fields.Integer(missing=50, validate=lambda v: 1 <= v <= 200)
+    page = ma.fields.Integer(load_default=0, validate=lambda v: v >= 0)
+    rows_per_page = ma.fields.Integer(load_default=50, validate=lambda v: 1 <= v <= 200)
 
 
 class BookSchema(ma.Schema):
@@ -33,7 +33,7 @@ class AuthorSchema(ma.Schema):
 
 
 class AuthorsQueryArgsSchema(BaseListQueryArgsSchema):
-    isbn = ma.fields.String(description="Filter authors by book id")
+    isbn = ma.fields.String(metadata={'description': 'Filter authors by book id'})
 
 
 class CategorySchema(ma.Schema):
@@ -43,4 +43,4 @@ class CategorySchema(ma.Schema):
 
 
 class CategoriesQueryArgsSchema(BaseListQueryArgsSchema):
-    isbn = ma.fields.String(description="Filter categories by book id")
+    isbn = ma.fields.String(metadata={'description': 'Filter categories by book id'})
