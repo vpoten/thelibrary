@@ -56,3 +56,12 @@ def test_delete(client, data_for_author):
     data_id = call_create_endpoint(client, API_BLUEPRINT, data_for_author).json['id']
     res = client.delete(f'{API_BLUEPRINT}{data_id}')
     assert res.status_code == 204
+
+
+def test_get_books(client, data_for_author):
+    """It should test the get books endpoint"""
+    data_id = call_create_endpoint(client, API_BLUEPRINT, data_for_author).json['id']
+
+    res = client.get(f'{API_BLUEPRINT}{data_id}/books')
+    assert res.status_code == 200
+    assert len(res.json) == 0

@@ -9,7 +9,7 @@ from src.db.manager_db import init_db
 @pytest.fixture
 def app():
     """
-    Returns the flask app
+    Returns the flask app with a fresh/cleared database
     """
     db_fd, db_path = tempfile.mkstemp()
 
@@ -33,7 +33,7 @@ def app():
 @pytest.fixture
 def client():
     """
-    Returns the flask client for blueprint testing
+    Returns the flask client for blueprint testing with a fresh/cleared database
     :return:
     """
     db_fd, db_path = tempfile.mkstemp()
