@@ -2,7 +2,10 @@
 
 ## Abstract
 
-This service provides a REST API for basic library management.
+This service provides a REST API for basic library management and is intended to be used as an API.
+
+A [Swagger UI](#api-swagger-interface) is provided as documentation and working platform.
+
 
 ## Technological stack
 
@@ -30,7 +33,9 @@ docker run thelibrary:latest pytest tests/
 docker run -p 5000:5000 thelibrary:latest
 ```
 
-## Non docker execution of the project
+**Note: for the sake of simplicity an embedded sqlite database is used, no data will persist between container reboots**
+
+## Non docker execution of the app
 
 Run the `install_local.sh` script from project root folder. This script will create the virtual environment with
 all the required dependencies installed on it:
