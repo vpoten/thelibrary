@@ -11,6 +11,4 @@ class Book:
     isbn: str
     title: str
     date_of_publication: date
-    created: datetime
-    authors: List[Author] = field(default_factory=list)
-    categories: List[Category] = field(default_factory=list)
+    created: datetime = None

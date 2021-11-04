@@ -134,3 +134,6 @@ dmypy.json
 
 # config files
 server_environment.py
+
+# SQlite database
+sqlite.db

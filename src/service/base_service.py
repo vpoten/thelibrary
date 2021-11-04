@@ -13,6 +13,7 @@ class BaseService(object):
 
     def update(self, item_id, data):
         entity = self.repository.get_dataclass()(**data)
+        # force entity id
         setattr(entity, self.repository.get_id_field_name(), item_id)
         self.repository.update(entity, True)
         return self.retrieve(item_id)

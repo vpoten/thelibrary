@@ -7,10 +7,10 @@ from src.exception.item_not_found import ItemNotFoundError
 class BaseRepository(object):
 
     def __init__(self, db=None):
-        self._db = manager_db.get_db() if db is None else db
+        self._db = db
 
     def get_db(self):
-        return self._db
+        return manager_db.get_db() if self._db is None else self._db
 
     def clear_table(self):
         sql = f'DELETE FROM {self.get_table()};\nVACUUM;'

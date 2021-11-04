@@ -1,3 +1,3 @@
 DB_CONFIG = {
-    'DATABASE': ':memory:'
+    'DATABASE': 'sqlite.db'
 }

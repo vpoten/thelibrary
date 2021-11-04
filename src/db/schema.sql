@@ -45,7 +45,7 @@ CREATE TABLE BookAuthor
 CREATE TABLE BookCategory
 (
     isbn        NVARCHAR(50) NOT NULL,
-    category_id INTEGER NOT MULL,
+    category_id INTEGER NOT NULL,
     FOREIGN KEY (isbn)
         REFERENCES Book (isbn)
         ON DELETE CASCADE

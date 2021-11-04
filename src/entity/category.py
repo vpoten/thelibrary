@@ -4,6 +4,6 @@ from dataclasses import dataclass
 
 @dataclass
 class Category:
-    id: int
     name: str
-    created: datetime
+    id: int = None
+    created: datetime = None

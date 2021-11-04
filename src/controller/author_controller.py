@@ -5,7 +5,7 @@ from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import AuthorSchema, AuthorsQueryArgsSchema
 from src.service.author_service import AuthorService
 
-blp = Blueprint('authors', 'authors', url_prefix='/api/authors', description='Operations on authors')
+blp = Blueprint('Authors', 'authors', url_prefix='/api/authors', description='Operations on authors')
 
 
 @blp.route("/")

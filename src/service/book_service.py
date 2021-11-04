@@ -14,9 +14,21 @@ class BookService(BaseService):
         super().__init__(BookRepository())
 
     def add_author(self, book: Book, author: Author):
+        """
+        Associate an author with a book
+        :param book:
+        :param author:
+        :return:
+        """
         book_authors = BookAuthorRepository(self.repository.get_db())
         book_authors.insert(BookAuthor(isbn=book.isbn, author_id=author.id), True)
 
     def add_category(self, book: Book, category: Category):
+        """
+        Associate a category with a book
+        :param book:
+        :param category:
+        :return:
+        """
         book_categories = BookCategoryRepository(self.repository.get_db())
         book_categories.insert(BookCategory(isbn=book.isbn, category_id=category.id), True)

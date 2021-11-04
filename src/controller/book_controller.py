@@ -7,7 +7,7 @@ from src.service.book_service import BookService
 from src.service.category_service import CategoryService
 from src.service.author_service import AuthorService
 
-blp = Blueprint('books', 'books', url_prefix='/api/books', description='Operations on books')
+blp = Blueprint('Books', 'books', url_prefix='/api/books', description='Operations on books')
 
 book_service = BookService()
 category_service = CategoryService()

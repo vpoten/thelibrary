@@ -5,7 +5,7 @@ from src.exception.item_not_found import ItemNotFoundError
 from src.controller.shared_schemas import CategorySchema, CategoriesQueryArgsSchema
 from src.service.category_service import CategoryService
 
-blp = Blueprint('categories', 'categories', url_prefix='/api/categories', description='Operations on categories')
+blp = Blueprint('Categories', 'categories', url_prefix='/api/categories', description='Operations on categories')
 
 
 @blp.route("/")
