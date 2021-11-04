@@ -1,5 +1,9 @@
 import marshmallow as ma
 
+"""
+Schemas for serialization/deserialization/validation of REST API endpoint input and output
+"""
+
 
 class BaseListQueryArgsSchema(ma.Schema):
     """
@@ -10,6 +14,7 @@ class BaseListQueryArgsSchema(ma.Schema):
 
 
 class BookSchema(ma.Schema):
+    id = ma.fields.Integer(dump_only=True)
     isbn = ma.fields.String(required=True)
     title = ma.fields.String(required=True)
     date_of_publication = ma.fields.Date(required=True)

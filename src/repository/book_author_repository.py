@@ -20,6 +20,9 @@ class BookAuthorRepository(BaseRepository):
     def get_id_field_name(self):
         raise NotImplementedError
 
+    def get_lastrowid_field_name(self):
+        return None
+
     def get_book_authors(self, isbn, author_id=None):
         """
         Get the BookAuthor list associated to the given isbn

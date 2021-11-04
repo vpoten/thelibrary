@@ -7,7 +7,8 @@ DROP TABLE IF EXISTS BookCategory;
 
 CREATE TABLE Book
 (
-    isbn                NVARCHAR(50) PRIMARY KEY,
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    isbn                NVARCHAR(50),
     title               TEXT      NOT NULL,
     date_of_publication DATE NULL,
     created             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -56,5 +57,8 @@ CREATE TABLE BookCategory
         ON UPDATE NO ACTION
 );
 
+CREATE UNIQUE INDEX book_isbn_index on Book (isbn);
 CREATE UNIQUE INDEX category_name_index on Category (name);
 CREATE UNIQUE INDEX author_name_index on Author (name);
+CREATE UNIQUE INDEX bookauthor_rel_index on BookAuthor (isbn, author_id);
+CREATE UNIQUE INDEX bookcategory_rel_index on BookCategory (isbn, category_id);

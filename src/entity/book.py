@@ -11,4 +11,5 @@ class Book:
     isbn: str
     title: str
     date_of_publication: date
+    id: int = None
     created: datetime = None

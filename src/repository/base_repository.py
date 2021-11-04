@@ -118,17 +118,26 @@ class BaseRepository(object):
         """
         return 'id'
 
+    def get_lastrowid_field_name(self):
+        """
+        Get the ID field name for retrieving entities after insertion (default `id`), override if necessary.
+        Could return None to disable retrieving after insertion
+        """
+        return 'id'
+
     def insert(self, entity, commit=False):
         """
         Insert the object model in database
         :param entity: a `@dataclass` entity
         :param commit:
-        :return:
+        :return: instance of class `self.get_dataclass()`
         """
         sql, parameters = self._get_insert_parameters(entity)
-        self._execute(f'insert into {self.get_table()} {sql}', parameters)
+        cursor = self._execute(f'insert into {self.get_table()} {sql}', parameters)
         if commit is True:
             self.commit()
+        if self.get_lastrowid_field_name() is not None:
+            return self._get_by_id(cursor.lastrowid, self.get_lastrowid_field_name())
 
     def update(self, entity, commit=False):
         """
@@ -145,18 +154,27 @@ class BaseRepository(object):
         if commit is True:
             self.commit()
 
-    def get_by_id(self, item_id):
+    def _get_by_id(self, item_id, id_field_name):
         """
         Get an entity by its id
         :param item_id:
-        :return:
+        :param id_field_name:
+        :return: instance of class `self.get_dataclass()`
         """
-        sql = f'select * from {self.get_table()} where {self.get_id_field_name()} = ?'
+        sql = f'select * from {self.get_table()} where {id_field_name} = ?'
         cursor = self._execute(sql, (item_id,))
         result = cursor.fetchone()
         if result is None:
             raise ItemNotFoundError()
         return self.get_dataclass()(**result)
+
+    def get_by_id(self, item_id):
+        """
+        Get an entity by its id
+        :param item_id:
+        :return: instance of class `self.get_dataclass()`
+        """
+        return self._get_by_id(item_id, self.get_id_field_name())
 
     def delete_by_id(self, item_id, commit=False):
         """

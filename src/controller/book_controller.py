@@ -69,7 +69,7 @@ def get_categories(isbn):
     """Get Book categories"""
     try:
         book = book_service.retrieve(isbn)
-        return category_service.list(isbn=isbn)
+        return category_service.list(isbn=book.isbn)
     except ItemNotFoundError:
         abort(404, message="Item not found.")
 
@@ -85,6 +85,8 @@ def add_category(isbn, category_id):
         return category
     except ItemNotFoundError:
         abort(404, message="Item not found.")
+    except DatabaseError as err:
+        abort(400, message=str(err))
 
 
 @blp.route("/<isbn>/authors", methods=['GET'])
@@ -93,7 +95,7 @@ def get_authors(isbn):
     """Get Book authors"""
     try:
         book = book_service.retrieve(isbn)
-        return author_service.list(isbn=isbn)
+        return author_service.list(isbn=book.isbn)
     except ItemNotFoundError:
         abort(404, message="Item not found.")
 
@@ -109,3 +111,5 @@ def add_author(isbn, author_id):
         return author
     except ItemNotFoundError:
         abort(404, message="Item not found.")
+    except DatabaseError as err:
+        abort(400, message=str(err))
