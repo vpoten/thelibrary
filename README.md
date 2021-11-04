@@ -20,14 +20,14 @@ The stack used to create this API is:
 docker build . -t thelibrary:latest
 ```
 
-#### Run server
-```
-docker run thelibrary:latest
-```
-
 #### Run tests
 ```
 docker run thelibrary:latest pytest tests/
+```
+
+#### Run server; bind to port 5000
+```
+docker run -p 5000:5000 thelibrary:latest
 ```
 
 ## Non docker execution of the project
@@ -60,7 +60,7 @@ pytest -v
 
 ## API Swagger interface
 
-It is possible to access the API via Swagger UI from the url:
+It is possible to work with the API via Swagger UI from the url:
 ```
 http://<host>:<port>/apidocs/swagger#/
 ```
