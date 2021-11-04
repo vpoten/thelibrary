@@ -5,6 +5,9 @@ from src.exception.item_not_found import ItemNotFoundError
 
 
 class BaseRepository(object):
+    """
+    Base class for SQLite based repositories
+    """
 
     def __init__(self, db=None):
         self._db = db
@@ -106,8 +109,9 @@ class BaseRepository(object):
         """
         sql, parameters = self._get_update_parameters(entity)
         parameters += (getattr(entity, self.get_id_field_name()),)
-        self._execute(f'update {self.get_table()} set {sql} where {self.get_id_field_name()}=?', parameters)
-        # TODO raise ItemNotFoundError
+        cursor = self._execute(f'update {self.get_table()} set {sql} where {self.get_id_field_name()}=?', parameters)
+        if cursor.rowcount == 0:
+            raise ItemNotFoundError()
         if commit is True:
             self.commit()
 
@@ -132,8 +136,9 @@ class BaseRepository(object):
         :return:
         """
         sql = f'delete from {self.get_table()} where {self.get_id_field_name()} = ?'
-        # TODO raise ItemNotFoundError
-        self._execute(sql, (item_id,))
+        cursor = self._execute(sql, (item_id,))
+        if cursor.rowcount == 0:
+            raise ItemNotFoundError()
         if commit is True:
             self.commit()
 
